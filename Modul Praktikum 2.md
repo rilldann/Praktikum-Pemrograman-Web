@@ -144,6 +144,7 @@ Dalam modul ini, kita akan membahas:
 - Konsep routing dan bagaimana mengelola rute dalam aplikasi
 - Penggunaan templating dengan Blade untuk membuat tampilan yang lebih dinamis
 - Implementasi layout dan komponen Blade agar kode tampilan lebih modular dan reusable
+- Cara menggunakan asset seperti CSS dan gambar dalam Laravel
 
 ## 2. Struktur Dasar Laravel
 
@@ -206,11 +207,40 @@ Route::get('/user/{name?}', function ($name = 'Guest') {
 });
 ```
 
-## 4. Konsep Templating dengan Blade
+## 4. Blade Templating
 
-Blade adalah mesin templating Laravel yang menyediakan fitur-fitur seperti template inheritance, komponen, dan direktif untuk membuat tampilan lebih dinamis.
+Blade templating adalah sistem template bawaan dari Laravel yang memungkinkan Anda untuk membuat tampilan web dengan cara yang lebih rapi dan terstruktur.
 
-### 4.1. Membuat View dengan Blade
+Dengan Blade, Anda bisa membuat bagian-bagian dari halaman web, seperti header atau footer, yang bisa digunakan kembali di banyak halaman tanpa perlu menulis ulang kode. Tentunya, hal ini membuat proses pengembangan web lebih cepat dan mudah.
+
+Blade juga menyediakan fitur sederhana untuk menggabungkan logika PHP dengan HTML, seperti menampilkan data dari database atau memeriksa kondisi tertentu, menggunakan sintaks yang mudah dibaca dan dipahami.
+
+### 4.1. Sintaks Dasar
+
+‘{{  }}’ digunakan untuk mencetak data yang diproses oleh Laravel.
+
+```html
+<h1>{{ $judul }}</h1>
+```
+
+“@” digunakan untuk menginstruksikan perintah Blade.
+
+```html
+@if ($user)
+    <p>Selamat datang, {{ $user->name }}</p>
+@else
+    <p>Selamat datang, Guest</p>
+@endif
+```
+
+### 4.2. Blade directative
+
+@extends: digunakan untuk mewariskan layout. <br>
+@section: digunakan untuk mendefinisikan bagian konten.<br>
+@yield: digunakan untuk menampilkan konten tertentu dari section <br>
+@include: digunakan untuk menyertakan file blade lain.<br>
+
+### 4.3. Membuat View dengan Blade
 
 File Blade disimpan dalam `resources/views/`. Contoh membuat file `home.blade.php`:
 
@@ -276,35 +306,56 @@ Gunakan layout dalam `home.blade.php` dengan sintaks `@extends`:
 @endsection
 ```
 
-### 5.3. Menggunakan Komponen Blade
+## 6. Menggunakan Asset seperti CSS dan Gambar
 
-Komponen Blade memungkinkan kode yang dapat digunakan kembali. Contoh komponen `alert.blade.php`:
-
+### 6.1. Menambahkan CSS
+Tambahkan file CSS ke dalam folder public/css/ dan panggil dalam Blade dengan asset():
 ```html
-<!-- resources/views/components/alert.blade.php -->
-<div class="alert alert-{{ $type ?? 'info' }}">
-    {{ $slot }}
-</div>
+<!-- resources/views/layouts/layout.blade.php -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@yield('title')</title>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>My Laravel App</h1>
+    </header>
+    <div>
+        @yield('content')
+    </div>
+</body>
+</html>
 ```
 
-Gunakan komponen ini dalam view:
+### 6.2. Menampilkan Gambar
+Simpan gambar di folder public/images/ lalu tampilkan dengan:
 
 ```html
-<x-alert type="success">
-    Data berhasil disimpan!
-</x-alert>
-```
+<!-- resources/views/home.blade.php -->
+@extends('layouts.layout')
 
-## 6. Kesimpulan
+@section('title', 'Home Page')
+
+@section('content')
+    <h2>Selamat Datang di Halaman Home</h2>
+    <img src="{{ asset('images/welcome.jpg') }}" alt="Welcome Image" width="300">
+@endsection
+```
 
 Pada modul ini, kita telah mempelajari:
 - Struktur dasar Laravel dan fungsinya dalam pengembangan aplikasi web.
 - Dasar-dasar routing dan cara mengelola rute dalam Laravel.
 - Konsep templating dengan Blade dan penggunaannya dalam view.
 - Implementasi layout dan komponen Blade untuk membuat tampilan lebih modular.
+- Cara menggunakan asset seperti CSS dan gambar dalam Laravel.
 
 ### **Tugas:**
 
 1. Buat route yang menampilkan halaman profil pengguna.
-2. Buat tampilan profil menggunakan Blade dan gunakan layout..
-3. Implementasikan komponen tersebut dalam tampilan profil.
+2. Buat tampilan profil menggunakan Blade dan gunakan layout.
+3. Tambahkan CSS untuk mempercantik tampilan profil.
+4. Tambahkan gambar profil pengguna ke dalam tampilan.
+
+note : boleh menggunakan template
