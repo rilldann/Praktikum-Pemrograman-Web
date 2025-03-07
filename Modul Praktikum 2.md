@@ -133,7 +133,7 @@ Pada modul ini, kita telah mempelajari cara mengatur koneksi database di Laravel
 ### **Tugas:**
  -->
 
-# Modul Praktikum 2: Database dan Framework Laravel
+# Modul Praktikum 2: Routing dan Templating
 
 ## 1. Pendahuluan
 
